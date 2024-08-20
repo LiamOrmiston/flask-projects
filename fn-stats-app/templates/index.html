@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortnite Stats Dashboard</title>
+</head>
+<body>
+    <h1>Fortnite Stats Dashboard</h1>
+    
+    <!-- 1. Overall Performance Summary -->
+    <h2>Overall Performance</h2>
+    <p><strong>Wins:</strong> {{ overall_performance['wins'] }}</p>
+    <p><strong>Win Rate:</strong> {{ overall_performance['win_rate'] }}%</p>
+    <p><strong>K/D Ratio:</strong> {{ overall_performance['kd'] }}</p>
+    <p><strong>Kills Per Match:</strong> {{ overall_performance['kills_per_match'] }}</p>
+    
+    <!-- 4. Battle Pass Progress -->
+    <h2>Battle Pass Progress</h2>
+    <p><strong>Level:</strong> {{ battle_pass_progress['level'] }}</p>
+    <p><strong>Progress:</strong> {{ battle_pass_progress['progress'] }}%</p>
+
+    <!-- 7. Performance Heatmap -->
+    <h2>Performance Heatmap</h2>
+    {{ plot_html | safe }}
+</body>
+</html>
+
