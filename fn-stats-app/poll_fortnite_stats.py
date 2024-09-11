@@ -55,7 +55,7 @@ def update_category(category_name, new_stats):
 
 # Set up scheduler
 scheduler = BlockingScheduler()
-scheduler.add_job(fetch_and_store_stats, 'interval', minutes=5)
+scheduler.add_job(fetch_and_store_stats, 'interval', minutes=1)
 
 if __name__ == "__main__":
     print("Starting polling script...")

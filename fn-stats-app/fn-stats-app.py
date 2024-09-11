@@ -20,7 +20,21 @@ def get_stats():
     stats = {}
     categories = ['battlePass', 'overall']
     for cat in categories:
-        stats[cat] = db[cat].find_one(sort=[("_id", -1)])
+        stats[cat] = {}  # list(db[cat].find())
+
+        if cat == 'battlePass':
+            cols = ['level', 'progress']
+        else:
+            cols = ['kd', 'matches', 'kills', 'wins']
+
+        for col in cols:
+            stats[cat][col] = []
+
+        for doc in db[cat].find():
+            for col in cols:
+                stats[cat][col].append(doc[col])
+
+        print(stats[cat])
     return stats
 
 
@@ -34,29 +48,29 @@ def home():
 
         # 1. Overall Performance Summary
         overall_performance = {
-            "wins": overall["wins"],
-            "win_rate": overall["winRate"],
-            "kd": overall["kd"],
-            "kills_per_match": overall["killsPerMatch"]
+            "wins": overall["wins"][-1],
+            "kd": overall["kd"][-1],
+            
         }
 
         # 4. Battle Pass Progress
         battle_pass_progress = {
-            "level": battle_pass["level"],
-            "progress": battle_pass["progress"]
+            "level": battle_pass["level"][-1],
+            "progress": battle_pass["progress"][-1]
         }
 
         # 7. Performance Heatmap - Kills/Deaths Over Time
-        kills = overall["kills"]
-        deaths = overall["deaths"]
-        matches = overall["matches"]
+        kd = overall['kd']
+        matches = overall['matches']
+        kills = overall['kills']
+        wins = overall['wins']
 
-        data = {"Kills": [kills], "Deaths": [deaths], "Matches": [matches]}
+        data = {"Kills": kills, "KD": kd, "Matches": matches, "Wins": wins}
 
         # Create a Plotly figure
-        fig = px.line(data, x='Matches', y=['Kills', 'Deaths'],
+        fig = px.line(data, x='Matches', y=['KD'],
                       labels={'value': 'Rate', 'variable': 'Metric'},
-                      title="Performance Over Matches")
+                      title="KD Performance Over Matches")
 
         # Convert the figure to HTML
         plot_html = pio.to_html(fig, full_html=False)
